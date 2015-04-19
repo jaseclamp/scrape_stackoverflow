@@ -94,7 +94,7 @@ function addUsersToList() {
             //if the result is not null that means its already in the db so continue on to the next one in this loop
             if(!is_null($result)) { echo " -- already got"; continue; }
             
-            $users = R::dispense('users');
+            $users = R::dispense('data');
             $users->url=$data->href;
             $users->uid = $matches[1];
             $users->name = $data->innertext;
@@ -118,7 +118,7 @@ function addUsersToList() {
             //if the result is not null that means its already in the db so continue on to the next one in this loop
             if(!is_null($result)) { echo " -- already got"; continue; }
             
-            $users = R::dispense('users');
+            $users = R::dispense('data');
             $users->url=$data->href;
             $users->uid = $matches[1];
             $users->name = $data->innertext;
