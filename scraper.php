@@ -121,6 +121,7 @@ function addUsersToList() {
             $users->url=$data->href;
             $users->uid = $matches[1];
             $users->name = $data->plaintext;
+            $users->scraped = 0;
             R::store($users); 
             $GLOBALS['uids'][] = $matches[1];
             }
@@ -213,6 +214,7 @@ function geocodeUsers () {
     $users = R::getAll('select * from data');
     
     foreach($users as $user){
+        
         if($user['lat'] != '') continue; //if we already did, skip
         if($user['lng'] != '') continue; 
         if($user['location']=='') continue; 
