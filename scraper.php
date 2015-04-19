@@ -72,8 +72,6 @@ function addUsersToList() {
     //go throught he questions and capture users, this will just bypass all if all have been scrapped 
     foreach($questions as $question){
         
-        if( $question['scraped'] == 1 ) continue; //redundant but whatever.
-        
         $url = "http://stackoverflow.com".$question['url'];
         $html = file_get_contents($url);
         $dom = new simple_html_dom();
@@ -148,7 +146,7 @@ foreach($users as $user) { $_user = R::load('users',$user['id']);  R::trash( $_u
 function getUsers() {
     
     //Third go through each user page and capture their info!
-    $users = R::getAll('select * from data');
+    $users = R::getAll('select * from data where scraped != 1 order by id desc');
     
     foreach($users as $user){
         
@@ -157,10 +155,6 @@ function getUsers() {
         //get out of here if there's no url or it's a generic user
         if ( $user['url'] == '' ) {echo "empty url\n"; continue; }
         if ( $user['name'] == 'Community' ) {echo "generic user\n"; continue; }
-        
-        //skip already scraped
-        if( isset( $user['scraped'] ))
-        if( $user['scraped'] == 1) {echo " -- already got"; continue; }
         
         $url = "http://stackoverflow.com".$user['url'];
         $html = file_get_contents($url);
