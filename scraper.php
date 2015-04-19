@@ -192,7 +192,7 @@ function getUsers() {
             $tags = R::dispense('tags');
             $tags->thetag = $data->innertext;
             $tags->score = $data->parent()->find('div.stat',0)->find('div.number',0)->plaintext;
-            $tags->posts = $data->parent()->find('div.stat',0)->find('div.number',1)->plaintext
+            $tags->posts = $data->parent()->find('div.stat',0)->find('div.number',1)->plaintext;
             $tags->uid = $user['uid'];
             R::store($tags);
         }
