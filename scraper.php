@@ -134,7 +134,7 @@ function addUsersToList() {
         $_question->scraped = 1; 
         R::store($_question);
     
-        $dom->clear();
+        if(isset($dom)) $dom->clear();
         unset($html,$users,$_question,$result,$matches,$question,$questions);
     }
 }
@@ -212,7 +212,7 @@ function getUsers() {
         R::store($_users);
     }
     
-    $dom->clear();
+    if(isset($dom)) $dom->clear();
     unset($html,$tags,$_users,$result,$users,$user);
 
 }
