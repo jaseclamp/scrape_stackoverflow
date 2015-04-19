@@ -176,30 +176,23 @@ function getUsers() {
         $_users = R::load('data',$user['id']);
         
         //$_users->name = $dom->find("h1[id=user-displayname]",0)->innertext;
-        $_users->location = $dom->find("td[class=adr]",0)->innertext;
-        foreach($dom->find('div[class=data]',0)->find('table',0)->find('td') as $data ) {
-            if ( $data->innertext == "age" ) $_users->age = $data->next_sibling()->innertext;
-            if ( $data->innertext == "profile views" ) $_users->views = $data->next_sibling()->innertext;
-        }
-        if( $dom->find('a[class=url]',0) ) $_users->website = $dom->find('a[class=url]',0)->href;
-        $_users->member_since = $dom->find('td[class=cool]',0)->innertext;
-        $_users->last_seen = $dom->find('span[class=relativetime]',0)->innertext;
-        $_users->about = $dom->find('div[class=user-about-me]',0)->innertext;
-        $_users->logo = $dom->find('img[class=logo]',0)->src;
-        $_users->reputation = $dom->find('div[class=reputation]',0)->find('span',0)->find('a',0)->innertext;
-        //counts questions, badges etc
-        foreach($dom->find('div[class=subheader] h1 a[href*=tab]') as $data ) {
-            $key = trim( substr( strrchr($data->href,'='), 1 ) );
-            if($key)
-                $_users->$key = $data->find('span',0)->innertext;
-        }
+        $_users->location = trim( $dom->find("span.icon-location",0)->parent()->plaintext );
+        $_users->website = trim( $dom->find("span.icon-site",0)->parent()->plaintext );
+        $_users->age = trim( $dom->find("span.icon-history",0)->parent()->plaintext );
+        $_users->views = trim( $dom->find("span.icon-eye",0)->parent()->plaintext );
+        $_users->op = $dom->find('span.top-badge',0)->plaintext; 
+        $_users->answers = $dom->find('div.answers',0)->plaintext; 
+        $_users->questions = $dom->find('div.questions',0)->plaintext; 
+        $_users->about = $dom->find('div[class=bio]',0)->innertext;
+        $_users->logo = $dom->find('img[class=avatar-user]',0)->src;
+        $_users->reputation = $dom->find('div[class=reputation]',0)->innertext;
+    
         //this is for tags. it will blow up a table horizontally so we need to link to another vertical table
-        foreach($dom->find('div[class=answer-votes]') as $data ) {
+        foreach($dom->find('a[class=post-tag]') as $data ) {
             $tags = R::dispense('tags');
-            $value = $data->innertext;
-            $tag = preg_replace( '/[^a-z]/i', '', $data->next_sibling()->innertext );
-            $tags->tag = $tag;
-            $tags->value = $value;
+            $tags->thetag = $data->innertext;
+            $tags->score = $data->parent()->find('div.stat',0)->find('div.number',0)->plaintext;
+            $tags->posts = $data->parent()->find('div.stat',0)->find('div.number',1)->plaintext
             $tags->uid = $user['uid'];
             R::store($tags);
         }
