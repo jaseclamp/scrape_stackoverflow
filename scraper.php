@@ -60,6 +60,8 @@ foreach ($topics as $topic)
         $toc = R::dispense('toc');
         $toc->url = $url; 
         R::store($toc);
+        $dom->clear();
+        unset($html,$questions,$data,$matches,$result);
     }
 }
 
@@ -100,6 +102,7 @@ function addUsersToList() {
             $users->name = $data->innertext;
             R::store($users); 
             }
+
         }
         
         //get all the comment user links
@@ -130,6 +133,9 @@ function addUsersToList() {
         $_question = R::load('questions',$question['id']);
         $_question->scraped = 1; 
         R::store($_question);
+    
+        $dom->clear();
+        unset($html,$users,$_question,$result,$matches,$question,$questions);
     }
 }
 
@@ -205,6 +211,9 @@ function getUsers() {
         
         R::store($_users);
     }
+    
+    $dom->clear();
+    unset($html,$tags,$_users,$result,$users,$user);
 
 }
 
