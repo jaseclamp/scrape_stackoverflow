@@ -97,7 +97,7 @@ function addUsersToList() {
             $users = R::dispense('data');
             $users->url=$data->href;
             $users->uid = $matches[1];
-            $users->name = $data->innertext;
+            $users->name = $data->plaintext;
             R::store($users); 
             }
 
@@ -172,6 +172,8 @@ function getUsers() {
         //$_users->name = $dom->find("h1[id=user-displayname]",0)->innertext;
         if($dom->find("span.icon-location",0))
             $_users->location = trim( $dom->find("span.icon-location",0)->parent()->plaintext );
+        else 
+            $_users->location = '';
         if($dom->find("span.icon-site",0))
             $_users->website = trim( $dom->find("span.icon-site",0)->parent()->plaintext );
         $_users->age = trim( $dom->find("span.icon-history",0)->parent()->plaintext );
