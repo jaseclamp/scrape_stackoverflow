@@ -176,8 +176,10 @@ function getUsers() {
         $_users = R::load('data',$user['id']);
         
         //$_users->name = $dom->find("h1[id=user-displayname]",0)->innertext;
-        $_users->location = trim( $dom->find("span.icon-location",0)->parent()->plaintext );
-        $_users->website = trim( $dom->find("span.icon-site",0)->parent()->plaintext );
+        if($dom->find("span.icon-location",0))
+            $_users->location = trim( $dom->find("span.icon-location",0)->parent()->plaintext );
+        if($dom->find("span.icon-site",0))
+            $_users->website = trim( $dom->find("span.icon-site",0)->parent()->plaintext );
         $_users->age = trim( $dom->find("span.icon-history",0)->parent()->plaintext );
         $_users->views = trim( $dom->find("span.icon-eye",0)->parent()->plaintext );
         $_users->op = $dom->find('span.top-badge',0)->plaintext; 
