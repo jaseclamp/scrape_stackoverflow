@@ -22,6 +22,9 @@ R::nuke();
 
 $topics = array('php','angularjs','magento','zend-framework2','symfony2','java','ember.js','reactjs');
 
+$uids = R::getAll('select uid from data');
+if(count($uids)<1) $uids = array();
+
 //gather new questions?
 foreach ($topics as $topic)
 {
@@ -83,22 +86,20 @@ function addUsersToList() {
             if( strpos($data->href,"/users/")!==FALSE)
             {
             
-            echo "\nSaving user to list ".$data->innertext;
+            echo "\nSaving user to list ".$data->plaintext;
             
             preg_match("/\/users\/([0-9]*)/",$data->href,$matches);
             
             if(!isset($matches[1])) { echo " -- no id"; continue; }
             
-            //only capture users once
-            $result = R::findOne( 'data', ' url = ? ', array( $data->href ) );
-            //if the result is not null that means its already in the db so continue on to the next one in this loop
-            if(!is_null($result)) { echo " -- already got"; continue; }
+            if( in_array( $matches[1] , $GLOBALS['uids'] )  ) { echo " -- already got"; continue; }
             
             $users = R::dispense('data');
             $users->url=$data->href;
             $users->uid = $matches[1];
             $users->name = $data->plaintext;
             R::store($users); 
+            $GLOBALS['uids'][] = $matches[1];
             }
 
         }
@@ -108,22 +109,20 @@ function addUsersToList() {
             if( strpos($data->href,"/users/")!==FALSE)
             {
             
-            echo "\nSaving user to list ".$data->innertext;
+            echo "\nSaving user to list ".$data->plaintext;
             
             preg_match("/\/users\/([0-9]*)\//",$data->href,$matches);
             
             if(!isset($matches[1])) { echo " -- no id"; continue; }
             
-            //only capture users once
-            $result = R::findOne( 'users', ' url = ? ', array( $data->href ) );
-            //if the result is not null that means its already in the db so continue on to the next one in this loop
-            if(!is_null($result)) { echo " -- already got"; continue; }
+            if( in_array( $matches[1] , $GLOBALS['uids'] )  ) { echo " -- already got"; continue; }
             
             $users = R::dispense('data');
             $users->url=$data->href;
             $users->uid = $matches[1];
-            $users->name = $data->innertext;
+            $users->name = $data->plaintext;
             R::store($users); 
+            $GLOBALS['uids'][] = $matches[1];
             }
         }
         
