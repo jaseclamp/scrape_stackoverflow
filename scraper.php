@@ -92,7 +92,7 @@ function addUsersToList() {
             if(!isset($matches[1])) { echo " -- no id"; continue; }
             
             //only capture users once
-            $result = R::findOne( 'users', ' uid = ? ', array( $matches[1] ) );
+            $result = R::findOne( 'data', ' uid = ? ', array( $matches[1] ) );
             //if the result is not null that means its already in the db so continue on to the next one in this loop
             if(!is_null($result)) { echo " -- already got"; continue; }
             
@@ -148,7 +148,7 @@ foreach($users as $user) { $_user = R::load('users',$user['id']);  R::trash( $_u
 function getUsers() {
     
     //Third go through each user page and capture their info!
-    $users = R::getAll('select * from users');
+    $users = R::getAll('select * from data');
     
     foreach($users as $user){
         
@@ -173,7 +173,7 @@ function getUsers() {
         //is the url wrong? account deleted?
         if ( strpos( $dom->plaintext,'Page Not Found' ) !== FALSE ) { echo "page not found\n"; continue; }
         
-        $_users = R::load('users',$user['id']);
+        $_users = R::load('data',$user['id']);
         
         //$_users->name = $dom->find("h1[id=user-displayname]",0)->innertext;
         $_users->location = $dom->find("td[class=adr]",0)->innertext;
@@ -219,7 +219,7 @@ function getUsers() {
 
 function geocodeUsers () {
     
-    $users = R::getAll('select * from users');
+    $users = R::getAll('select * from data');
     
     foreach($users as $user){
         if($user['lat'] != '') continue; //if we already did, skip
@@ -238,13 +238,13 @@ function geocodeUsers () {
             $lat = $records['results'][0]['geometry']['location']['lat'];
             $lng = $records['results'][0]['geometry']['location']['lng'];
             echo $lat."-".$lng."\n";
-            $_users = R::load('users',$user['id']);
+            $_users = R::load('data',$user['id']);
             $_users->lat = $lat; 
             $_users->lng = $lng; 
             R::store($_users); 
         }else{
             echo "N/A\n";
-            $_users = R::load('users',$user['id']);
+            $_users = R::load('data',$user['id']);
             $_users->lat = 'XXX'; 
             $_users->lng = 'XXX'; 
             R::store($_users); 
