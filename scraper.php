@@ -17,7 +17,7 @@ require 'rb.php';
 require 'simple_html_dom.php';  
 R::setup('sqlite:data.sqlite');
 
-//R::nuke();
+R::nuke();
 
 
 $topics = array('php','angularjs','magento','zend-framework2','symfony2','java','ember.js','reactjs');
@@ -85,12 +85,12 @@ function addUsersToList() {
             
             echo "\nSaving user to list ".$data->innertext;
             
-            preg_match("/\/users\/(?<id>[0-9]*)/",$data->href,$matches);
+            preg_match("/\/users\/([0-9]*)/",$data->href,$matches);
             
             if(!isset($matches[1])) { echo " -- no id"; continue; }
             
             //only capture users once
-            $result = R::findOne( 'data', ' uid = ? ', array( $matches[1] ) );
+            $result = R::findOne( 'data', ' url = ? ', array( $data->href ) );
             //if the result is not null that means its already in the db so continue on to the next one in this loop
             if(!is_null($result)) { echo " -- already got"; continue; }
             
@@ -110,12 +110,12 @@ function addUsersToList() {
             
             echo "\nSaving user to list ".$data->innertext;
             
-            preg_match("/\/users\/(?<id>[0-9]*)\//",$data->href,$matches);
+            preg_match("/\/users\/([0-9]*)\//",$data->href,$matches);
             
             if(!isset($matches[1])) { echo " -- no id"; continue; }
             
             //only capture users once
-            $result = R::findOne( 'users', ' uid = ? ', array( $matches[1] ) );
+            $result = R::findOne( 'users', ' url = ? ', array( $data->href ) );
             //if the result is not null that means its already in the db so continue on to the next one in this loop
             if(!is_null($result)) { echo " -- already got"; continue; }
             
