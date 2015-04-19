@@ -17,7 +17,7 @@ require 'rb.php';
 require 'simple_html_dom.php';  
 R::setup('sqlite:data.sqlite');
 
-R::nuke();
+//R::nuke();
 
 
 $topics = array('php','angularjs','magento','zend-framework2','symfony2','java','ember.js','reactjs');
@@ -182,7 +182,8 @@ function getUsers() {
             $_users->website = trim( $dom->find("span.icon-site",0)->parent()->plaintext );
         $_users->age = trim( $dom->find("span.icon-history",0)->parent()->plaintext );
         $_users->views = trim( $dom->find("span.icon-eye",0)->parent()->plaintext );
-        $_users->op = $dom->find('span.top-badge',0)->plaintext; 
+        if($dom->find('span.top-badge',0))
+            $_users->op = $dom->find('span.top-badge',0)->plaintext; 
         $_users->answers = $dom->find('div.answers',0)->plaintext; 
         $_users->questions = $dom->find('div.questions',0)->plaintext; 
         $_users->about = $dom->find('div[class=bio]',0)->innertext;
@@ -190,7 +191,7 @@ function getUsers() {
         $_users->reputation = $dom->find('div[class=reputation]',0)->innertext;
     
         //this is for tags. it will blow up a table horizontally so we need to link to another vertical table
-        foreach($dom->find('a[class=post-tag]') as $data ) {
+        foreach($dom->find('div.tag-wrapper a[class=post-tag]') as $data ) {
             $tags = R::dispense('tags');
             $tags->thetag = $data->innertext;
             $tags->score = $data->parent()->find('div.stat',0)->find('div.number',0)->plaintext;
