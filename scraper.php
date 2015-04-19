@@ -15,12 +15,12 @@
 
 require 'rb.php';
 require 'simple_html_dom.php';  
-R::setup('sqlite:scraperwiki.sqlite');
+R::setup('sqlite:data.sqlite');
 
 //R::nuke();
 
 
-$topics = array('magento','php','javascript','mysql','css','java','zendframework','wordpress','python','rubyonrails');
+$topics = array('php','angularjs','magento','zend-framework2','symfony2','java','ember.js','reactjs');
 
 //gather new questions?
 foreach ($topics as $topic)
