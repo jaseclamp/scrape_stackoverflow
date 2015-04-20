@@ -247,6 +247,7 @@ function geocodeUsers () {
                 
             }else{
                 echo " -- XXX";
+                neat_r($records); die;
                 $lat = 'XXX'; 
                 $lng = 'XXX'; 
             }
