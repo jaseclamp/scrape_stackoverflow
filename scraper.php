@@ -213,37 +213,47 @@ function getUsers() {
 
 function geocodeUsers () {
     
-    $users = R::getAll('select * from data');
+    $users = R::getAll("select * from data where lat != ?", array('') );
     
     foreach($users as $user){
         
-        if($user['lat'] != '') continue; //if we already did, skip
+        if($user['lat'] != '') continue; //redundant check
         if($user['lng'] != '') continue; 
         if($user['location']=='') continue; 
         
-        $addr = urlencode($user['location']);
-        $addr = str_replace("%2C","",$addr);
-        $url = 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='.$addr;
-        $get = file_get_contents($url);
-        $records = json_decode($get,TRUE);
+        echo "\nGeocoding ".$user['name']." at ".$user['location'];
         
-        echo $addr.":";
-        if ( $records['status'] == 'OK' ) {
-            //neat_r($records['results'][]);
-            $lat = $records['results'][0]['geometry']['location']['lat'];
-            $lng = $records['results'][0]['geometry']['location']['lng'];
-            echo $lat."-".$lng."\n";
-            $_users = R::load('data',$user['id']);
-            $_users->lat = $lat; 
-            $_users->lng = $lng; 
-            R::store($_users); 
+        //if we got it before reuse.
+        $result = R::findOne( 'data', ' lat != :x AND lng != :x AND location = :loc ', array( ':x'=>'XXX', ':loc'=> $user['location'] ) );
+        //if the result is not null that means its already in the db so continue on to the next one in this loop
+        if(!is_null($result)) { 
+            echo " -- already got"; 
+            $lat = $result->lat;
+            $lng = $result->lng;
         }else{
-            echo "N/A\n";
-            $_users = R::load('data',$user['id']);
-            $_users->lat = 'XXX'; 
-            $_users->lng = 'XXX'; 
-            R::store($_users); 
+            $addr = urlencode($user['location']);
+            $addr = str_replace("%2C","",$addr);
+            $url = 'http://maps.googleapis.com/maps/api/geocode/json?sensor=false&address='.$addr;
+            $get = file_get_contents($url);
+            $records = json_decode($get,TRUE);
+            
+            echo $addr.":";
+            if ( $records['status'] == 'OK' ) {
+                //neat_r($records['results'][]);
+                $lat = $records['results'][0]['geometry']['location']['lat'];
+                $lng = $records['results'][0]['geometry']['location']['lng'];
+                echo " -- ".$lat."-".$lng."";
+                
+            }else{
+                echo " -- XXX";
+                $lat = 'XXX'; 
+                $lng = 'XXX'; 
+            }
         }
+        $_users = R::load('data',$user['id']);
+        $_users->lat = $lat; 
+        $_users->lng = $lng; 
+        R::store($_users); 
     } 
 }
 
