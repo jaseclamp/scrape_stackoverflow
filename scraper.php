@@ -17,8 +17,8 @@ require 'rb.php';
 require 'simple_html_dom.php';  
 R::setup('sqlite:data.sqlite');
 
-//R::nuke();
-R:exec("update `data` set `lat` = '', `lng` = '' "); die;
+R::nuke();
+
 
 $topics = array('php','angularjs','magento','zend-framework2','symfony2','java','ember.js','reactjs');
 
