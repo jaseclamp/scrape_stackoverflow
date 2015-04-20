@@ -225,7 +225,7 @@ function geocodeUsers () {
         echo "\nGeocoding ".$user['name']." at ".$user['location'];
         
         //if we got it before reuse.
-        $result = R::findOne( 'data', ' lat != :x AND lng != :x AND location = :loc ', array( ':x'=>'XXX', ':loc'=> $user['location'] ) );
+        $result = R::findOne( 'data', ' lat != :x AND lat != :blank AND location = :loc ', array( ':x'=>'XXX', ':blank'=>'', ':loc'=> $user['location'] ) );
         //if the result is not null that means its already in the db so continue on to the next one in this loop
         if(!is_null($result)) { 
             echo " -- already got"; 
