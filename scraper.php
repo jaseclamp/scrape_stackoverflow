@@ -34,7 +34,7 @@ foreach ($topics as $topic)
 {
     //get all questions, if we have any, skip this (may need to nuke and rerun if not all captured on first run)
     for($i=1; $i<=10; $i++) {
-        echo "\ngetting page $topic page $i "; 
+        $GLOBALS['toc'] = $topic.':'.$i; 
         $url = "http://stackoverflow.com/questions/tagged/".$topic."?page=".$i."&sort=votes&pagesize=50";
         
         //only capture toc pages once
@@ -47,7 +47,7 @@ foreach ($topics as $topic)
         $dom->load($html);
         foreach($dom->find('a[class=question-hyperlink]') as $data ){
             
-            echo "\n scraping question: " . $data->href;
+            echo "\n".$GLOBALS['toc']." scraping question: " . $data->href;
             
             //only capture questions once
             $result = R::findOne( 'questions', ' url = ? ', array( $data->href ) );
@@ -90,7 +90,7 @@ function addUsersToList() {
             if( strpos($data->href,"/users/")!==FALSE)
             {
             
-            echo "\nSaving user to list ".$data->plaintext;
+            echo "\n".$GLOBALS['toc']." Saving user to list ".$data->plaintext;
             
             preg_match("/\/users\/([0-9]*)/",$data->href,$matches);
             
@@ -113,7 +113,7 @@ function addUsersToList() {
             if( strpos($data->href,"/users/")!==FALSE)
             {
             
-            echo "\nSaving user to list ".$data->plaintext;
+            echo "\n".$GLOBALS['toc']." Saving user to list ".$data->plaintext;
             
             preg_match("/\/users\/([0-9]*)\//",$data->href,$matches);
             
@@ -154,7 +154,7 @@ function getUsers() {
     
     foreach($users as $user){
         
-        echo "\nGetting ".$user['name'];
+        echo "\n".$GLOBALS['toc']." Getting ".$user['name'];
         
         //get out of here if there's no url or it's a generic user
         if ( $user['url'] == '' ) {echo "empty url\n"; continue; }
@@ -225,7 +225,7 @@ function geocodeUsers () {
         if($user['lng'] != '') continue; 
         if($user['location']=='') continue; 
         
-        echo "\nGeocoding ".$user['name']." at ".$user['location'];
+        echo "\n".$GLOBALS['toc']." Geocoding ".$user['name']." at ".$user['location'];
         
         //if we got it before reuse.
         $result = R::findOne( 'data', ' lat != :x AND lat != :blank AND location = :loc ', array( ':x'=>'XXX', ':blank'=>'', ':loc'=> $user['location'] ) );
