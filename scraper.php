@@ -18,7 +18,7 @@ require 'simple_html_dom.php';
 R::setup('sqlite:data.sqlite');
 
 //R::nuke();
-
+R:exec('update data set lat = "",lng=""');
 
 $topics = array('php','angularjs','magento','zend-framework2','symfony2','java','ember.js','reactjs');
 
@@ -214,6 +214,8 @@ function getUsers() {
 
 function geocodeUsers () {
     
+    if( $GLOBALS['OVER_QUERY_LIMIT'] ) return false;
+    
     $users = R::getAll("select * from data where lat = ?", array('') );
     
     foreach($users as $user){
@@ -238,16 +240,18 @@ function geocodeUsers () {
             $get = file_get_contents($url);
             $records = json_decode($get,TRUE);
             
-            echo $addr.":";
             if ( $records['status'] == 'OK' ) {
                 //neat_r($records['results'][]);
                 $lat = $records['results'][0]['geometry']['location']['lat'];
                 $lng = $records['results'][0]['geometry']['location']['lng'];
                 echo " -- ".$lat."-".$lng."";
-                
+            elseif ( $records['status'] == 'OVER_QUERY_LIMIT' ) {
+                echo " -- OVER_QUERY_LIMIT";
+                $GLOBALS['OVER_QUERY_LIMIT'] = true;
+                return false;
             }else{
                 echo " -- XXX";
-                neat_r($records); die;
+                //neat_r($records); die;
                 $lat = 'XXX'; 
                 $lng = 'XXX'; 
             }
