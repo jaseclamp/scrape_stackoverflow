@@ -25,11 +25,13 @@ $topics = array('php','angularjs','magento','zend-framework2','symfony2','java',
 $uids = R::getAll('select uid from data');
 if(count($uids)<1) $uids = array();
 
+var_dump($uids);
+
 //gather new questions?
 foreach ($topics as $topic)
 {
     //get all questions, if we have any, skip this (may need to nuke and rerun if not all captured on first run)
-    for($i=1; $i<=20; $i++) {
+    for($i=1; $i<=10; $i++) {
         echo "\ngetting page $topic page $i "; 
         $url = "http://stackoverflow.com/questions/tagged/".$topic."?page=".$i."&sort=votes&pagesize=50";
         
