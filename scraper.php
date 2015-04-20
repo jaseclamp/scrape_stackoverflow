@@ -24,9 +24,10 @@ $topics = array('php','angularjs','magento','zend-framework2','symfony2','java',
 
 $uids = R::getAll('select uid from data');
 if(count($uids)<1) $uids = array();
+else {
 foreach($uids as $uid) $_uids[] = $uid['uid'];
 $uids = $_uids; unset($_uids);
-
+}
 //gather new questions?
 foreach ($topics as $topic)
 {
