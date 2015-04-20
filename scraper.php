@@ -245,7 +245,7 @@ function geocodeUsers () {
                 $lat = $records['results'][0]['geometry']['location']['lat'];
                 $lng = $records['results'][0]['geometry']['location']['lng'];
                 echo " -- ".$lat."-".$lng."";
-            elseif ( $records['status'] == 'OVER_QUERY_LIMIT' ) {
+            } elseif ( $records['status'] == 'OVER_QUERY_LIMIT' ) {
                 echo " -- OVER_QUERY_LIMIT";
                 $GLOBALS['OVER_QUERY_LIMIT'] = true;
                 return false;
