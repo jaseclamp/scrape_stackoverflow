@@ -214,7 +214,7 @@ function getUsers() {
 
 function geocodeUsers () {
     
-    if( $GLOBALS['OVER_QUERY_LIMIT'] ) return false;
+    if( isset( $GLOBALS['OVER_QUERY_LIMIT'] ) ) return false;
     
     $users = R::getAll("select * from data where lat = ?", array('') );
     
