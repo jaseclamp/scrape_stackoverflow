@@ -18,6 +18,7 @@ require 'simple_html_dom.php';
 R::setup('sqlite:data.sqlite');
 
 //R::nuke();
+R::wipe('toc');
 
 
 $topics = array('php','angularjs','magento','zend-framework2','symfony2','java','ember.js','reactjs');
