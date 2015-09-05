@@ -17,11 +17,14 @@ require 'rb.php';
 require 'simple_html_dom.php';  
 R::setup('sqlite:data.sqlite');
 
-//R::nuke();
+if( isset( $_SERVER['MORPH_NUKE'] ) )
+	if ( $_SERVER['MORPH_NUKE'] == 'Y' ) 
+		R::nuke();
+		
 R::wipe('toc');
 
 
-$topics = array('php','angularjs','magento','zend-framework2','symfony2','java','ember.js','reactjs');
+$topics = array('javascript','reactjs','node.js','angularjs','knockout.js','backbone.js','meteor','ember.js','canjs');
 
 $uids = R::getAll('select uid from data');
 if(count($uids)<1) $uids = array();
