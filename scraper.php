@@ -24,7 +24,8 @@ if( isset( $_SERVER['MORPH_NUKE'] ) )
 R::wipe('toc');
 
 
-$topics = array('javascript','reactjs','node.js','angularjs','knockout.js','backbone.js','meteor','ember.js','canjs');
+//$topics = array('javascript','reactjs','node.js','angularjs','knockout.js','backbone.js','meteor','ember.js','canjs');
+$topics = array('magento');
 
 $uids = R::getAll('select uid from data');
 if(count($uids)<1) $uids = array();
@@ -36,7 +37,7 @@ $uids = $_uids; unset($_uids);
 foreach ($topics as $topic)
 {
     //get all questions, if we have any, skip this (may need to nuke and rerun if not all captured on first run)
-    for($i=1; $i<=10; $i++) {
+    for($i=1; $i<=650; $i++) {
         $GLOBALS['toc'] = $topic.':'.$i; 
         $url = "http://stackoverflow.com/questions/tagged/".$topic."?page=".$i."&sort=votes&pagesize=50";
         
