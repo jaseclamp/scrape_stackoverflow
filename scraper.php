@@ -44,7 +44,9 @@ foreach ($topics as $topic)
         //only capture toc pages once
         $result = R::findOne( 'toc', ' url = ? ', array( $url ) );
         //if the result is not null that means its already in the db so continue on to the next one in this loop
-        if(!is_null($result)) { echo " -- already got"; continue; }
+        if(!is_null($result)) { 
+        	//echo " -- already got"; 
+        	continue; }
         
         $html = file_get_contents($url);
         $dom = new simple_html_dom();
@@ -56,7 +58,9 @@ foreach ($topics as $topic)
             //only capture questions once
             $result = R::findOne( 'questions', ' url = ? ', array( $data->href ) );
             //if the result is not null that means its already in the db so continue on to the next one in this loop
-            if(!is_null($result)) { echo " -- already got"; continue; }
+            if(!is_null($result)) { 
+            	//echo " -- already got"; 
+            	continue; }
             
             $questions = R::dispense('questions');
             $questions->url=$data->href;
