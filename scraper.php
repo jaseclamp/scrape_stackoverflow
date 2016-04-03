@@ -28,8 +28,6 @@ for($i=$max; $i<=$max+1000; $i++)
 	
 	$users = json_decode($json,true);
 	
-	var_dump($json); die; 
-	
 	foreach($users['items'] as $user)
 	{
 		$users = R::dispense('data');
