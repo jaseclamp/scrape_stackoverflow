@@ -17,7 +17,7 @@ if(!$max) $max=1;
 echo "\n got up to page ".$max." last time";
 echo "\n";
 
-for($i=$max; $i<=$max+1000; $i++)
+for($i=$max+1; $i<=$max+1000; $i++)
 {
 	
 	echo $i . ', ';
