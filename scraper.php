@@ -26,7 +26,7 @@ for($i=$max; $i<=$max+1000; $i++)
 	
 	$users = json_decode($json,true);
 	
-	print_r($users); die; 
+	var_dump($users); die; 
 	
 	foreach($users['items'] as $user)
 	{
