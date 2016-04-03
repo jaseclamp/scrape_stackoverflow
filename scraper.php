@@ -31,7 +31,7 @@ for($i=$max; $i<=$max+1000; $i++)
 	foreach($users['items'] as $user)
 	{
 		$users = R::dispense('data');
-		
+		$users->page = $i; 
 		foreach($user as $key => $value)
 		{
 			if(is_array($value)) continue; 
