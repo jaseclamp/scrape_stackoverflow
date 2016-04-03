@@ -24,6 +24,8 @@ for($i=$max; $i<=$max+1000; $i++)
 	
 	$json = file_get_contents( 'https://api.stackexchange.com/2.2/users?page='.$i.'&pagesize=100&order=asc&sort=creation&site=stackoverflow' );
 	
+	if(!$json) die("\n problem getting page"); 
+	
 	$json = gzdecode($json);
 	
 	$users = json_decode($json,true);
